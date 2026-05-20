@@ -41,15 +41,17 @@ impl OpenRouterClient {
         &self,
         agent: &Agent,
         inputs: &HashMap<String, String>,
+        model_override: Option<&str>,
     ) -> Result<OutputType, String> {
         let prompt = self.render_prompt(&agent.prompt, inputs);
+        let model = model_override.unwrap_or(&agent.model.model);
 
         let output_type = agent.output.output_type.as_str();
 
         match output_type {
-            "image" => self.generate_image(&agent.model.model, &prompt).await,
-            "markdown" => self.generate_text(&agent.model.model, &prompt).await.map(OutputType::Markdown),
-            _ => self.generate_text(&agent.model.model, &prompt).await.map(OutputType::Text),
+            "image" => self.generate_image(model, &prompt).await,
+            "markdown" => self.generate_text(model, &prompt).await.map(OutputType::Markdown),
+            _ => self.generate_text(model, &prompt).await.map(OutputType::Text),
         }
     }
 

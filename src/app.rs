@@ -18,6 +18,8 @@ pub struct OpenAgentApp {
     input_values: HashMap<String, String>,
     search_queries: HashMap<String, String>,
     output: Option<OutputType>,
+    selected_model: Option<String>,
+    available_models: Vec<String>,
     is_loading: bool,
     error_message: Option<String>,
     registry: Option<AgentRegistry>,
@@ -43,6 +45,17 @@ impl OpenAgentApp {
             input_values: HashMap::new(),
             search_queries: HashMap::new(),
             output: None,
+            selected_model: None,
+            available_models: vec![
+                "openai/gpt-4o-mini".to_string(),
+                "openai/gpt-4o".to_string(),
+                "openai/gpt-4.1-mini".to_string(),
+                "openai/gpt-4.1".to_string(),
+                "anthropic/claude-3.5-sonnet".to_string(),
+                "anthropic/claude-3.7-sonnet".to_string(),
+                "google/gemini-2.0-flash-001".to_string(),
+                "google/gemini-2.5-pro".to_string(),
+            ],
             is_loading: false,
             error_message: None,
             registry: None,
@@ -193,6 +206,7 @@ impl OpenAgentApp {
                         ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                             if secondary_button(ui, "SELECT").clicked() {
                                 self.selected_agent = Some(agent.clone());
+                                self.selected_model = Some(agent.model.model.clone());
                                 self.input_values.clear();
                                 self.output = None;
                                 self.error_message = None;
@@ -419,13 +433,14 @@ impl OpenAgentApp {
         
         if back_clicked {
             self.selected_agent = None;
+            self.selected_model = None;
             self.output = None;
             self.error_message = None;
             self.input_values.clear();
             return;
         }
         
-        if let Some(agent) = &self.selected_agent {
+        if let Some(agent) = self.selected_agent.clone() {
             // Agent name - uppercase kinetic style
             ui.label(
                 egui::RichText::new(agent.name.to_uppercase())
@@ -443,6 +458,33 @@ impl OpenAgentApp {
             
             horizontal_rule(ui, 1.0);
 
+            if agent.output.output_type != "image" {
+                ui.label(
+                    egui::RichText::new("MODEL")
+                        .size(Typography::SM)
+                        .strong()
+                );
+
+                let selected_model = self
+                    .selected_model
+                    .get_or_insert_with(|| agent.model.model.clone());
+                let mut model_options = self.available_models.clone();
+                if !model_options.iter().any(|m| m == selected_model) {
+                    model_options.insert(0, selected_model.clone());
+                }
+
+                egui::ComboBox::from_id_salt("run_model_select")
+                    .selected_text(selected_model.as_str())
+                    .width(ui.available_width())
+                    .show_ui(ui, |ui| {
+                        for model in model_options {
+                            ui.selectable_value(selected_model, model.clone(), model);
+                        }
+                    });
+
+                ui.add_space(Spacing::XXS);
+            }
+
 
             // Input form
             ui.label(
@@ -451,7 +493,7 @@ impl OpenAgentApp {
                     .strong()
             );
             
-            InputRenderer::render(agent, &mut self.input_values, &mut self.search_queries, ui);
+            InputRenderer::render(&agent, &mut self.input_values, &mut self.search_queries, ui);
 
             ui.add_space(Spacing::XXS);
             
@@ -579,6 +621,7 @@ impl OpenAgentApp {
 
         let api_key = self.settings.openrouter_api_key.clone();
         let input_values = self.input_values.clone();
+        let selected_model = self.selected_model.clone();
 
         self.is_loading = true;
         self.error_message = None;
@@ -588,7 +631,7 @@ impl OpenAgentApp {
                 .unwrap()
                 .block_on(async {
                     let client = OpenRouterClient::new(api_key);
-                    client.execute_agent(&agent, &input_values).await
+                    client.execute_agent(&agent, &input_values, selected_model.as_deref()).await
                 })
         });
 
