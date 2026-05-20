@@ -12,7 +12,7 @@ impl Default for Settings {
     fn default() -> Self {
         Self {
             openrouter_api_key: String::new(),
-            github_registry_url: "https://raw.githubusercontent.com/username/openagent-registry/main/registry.yaml".to_string(),
+            github_registry_url: "https://raw.githubusercontent.com/its-ash/RouterStudio/main/examples/registry.yaml".to_string(),
         }
     }
 }

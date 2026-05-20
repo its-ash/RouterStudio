@@ -220,10 +220,35 @@ impl OpenAgentApp {
         horizontal_rule(ui, 2.0);
         ui.add_space(Spacing::XS);
 
-        if self.community_agents.is_empty() && !self.is_loading {
+        if self.is_loading {
             ui.label(
                 egui::RichText::new("Loading community agents...")
                     .size(Typography::LG)
+                    .color(Colors::MUTED_FOREGROUND)
+            );
+        }
+
+        if let Some(error) = &self.error_message {
+            ui.add_space(Spacing::XXS);
+            inverted_card_frame(ui, |ui| {
+                ui.label(
+                    egui::RichText::new("COMMUNITY FETCH ERROR")
+                        .size(Typography::BASE)
+                        .strong()
+                );
+                ui.add_space(Spacing::XXXS);
+                ui.label(
+                    egui::RichText::new(error)
+                        .size(Typography::SM)
+                );
+            });
+        }
+
+        if !self.is_loading && self.community_agents.is_empty() && self.error_message.is_none() {
+            ui.add_space(Spacing::XXS);
+            ui.label(
+                egui::RichText::new("No community agents found for current registry URL.")
+                    .size(Typography::BASE)
                     .color(Colors::MUTED_FOREGROUND)
             );
         }
@@ -254,7 +279,7 @@ impl OpenAgentApp {
                         
                         if is_installed {
                             ui.label(
-                                egui::RichText::new("✓ INSTALLED")
+                                egui::RichText::new("INSTALLED")
                                     .size(Typography::SM)
                                     .strong()
                             );
@@ -520,13 +545,15 @@ impl OpenAgentApp {
     }
 
     fn load_community_agents(&mut self) {
-        if self.registry.is_some() {
+        if self.is_loading {
             return;
         }
 
         let registry_url = self.settings.github_registry_url.clone();
 
         self.is_loading = true;
+        self.error_message = None;
+        self.community_agents.clear();
         let promise = poll_promise::Promise::spawn_thread("fetch_registry", move || {
             tokio::runtime::Runtime::new()
                 .unwrap()

@@ -6,7 +6,7 @@ agents:
     description: Generate AI images using Pollinations
     version: 1.0.0
     author: OpenAgent
-    file: agents/image-generator.yaml
+    file: image-generator.yaml
     tags:
       - image
       - art
@@ -16,7 +16,7 @@ agents:
     description: General purpose AI assistant
     version: 1.0.0
     author: OpenAgent
-    file: agents/text-assistant.yaml
+    file: text-assistant.yaml
     tags:
       - text
       - chat
@@ -26,7 +26,18 @@ agents:
     description: Generate code in multiple languages
     version: 1.0.0
     author: OpenAgent
-    file: agents/code-generator.yaml
+    file: code-generator.yaml
     tags:
       - code
       - development
+
+  - id: logo-prompt-generator
+    name: Logo Prompt Generator
+    description: Generate a logo prompt from brand name and brand description
+    version: 1.0.0
+    author: OpenAgent
+    file: logo-prompt-generator.yaml
+    tags:
+      - logo
+      - branding
+      - prompt

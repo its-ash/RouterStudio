@@ -1,0 +1,32 @@
+id: logo-prompt-generator
+name: Logo Prompt Generator
+description: Generate a high-quality logo design prompt from brand details
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  brand_name:
+    type: text
+    required: true
+  brand_description:
+    type: textarea
+    required: false
+
+model:
+  provider: openrouter
+  model: openai/gpt-4
+
+output:
+  type: markdown
+
+prompt: |
+  Generate one polished, production-ready logo design prompt for an image model.
+
+  Brand name: {{brand_name}}
+  Brand description (optional): {{brand_description}}
+
+  Requirements:
+  - Return only the final logo prompt text.
+  - Keep it concise and specific.
+  - Include style, color direction, typography direction, composition, and background constraints.
+  - Make it suitable for clean vector-style logo generation.
