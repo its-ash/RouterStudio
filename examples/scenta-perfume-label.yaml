@@ -1,0 +1,46 @@
+id: 82f9282f-55c6-4bdf-85e9-8c402eac75fd
+name: Scenta Perfume Label
+description: Generates one final plain-text prompt that can be pasted into another AI image model.
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  perfume_name:
+    type: text
+    required: true
+    default: La Vie Est Belle
+  brand_name:
+    type: text
+    required: false
+    default: Scenta
+  brand_description:
+    type: textarea
+    required: false
+
+model:
+  provider: openrouter
+  model: openai/gpt-4
+
+output:
+  type: text
+
+prompt: |
+  Agent Description: Generates one final plain-text prompt for an AI image model.
+
+  System Rules:
+  - Return exactly one plain-text prompt.
+  - No JSON, markdown, bullets, or explanations.
+  - Keep wording minimal and compact.
+  - Flat 2D design only (no 3D, bottles, glass, shadows, caps, liquid).
+  - Strict 1:1 square layout.
+  - "{{perfume_name}}" must be the largest, dominant text.
+  - Use accurate fragrance notes only when provided by the user.
+  - Background must be derived only from the provided notes/description.
+  - Maintain luxury, clean, print-ready design.
+
+  Brand name: {{brand_name}}
+  Perfume name: {{perfume_name}}
+  Brand description (optional): {{brand_description}}
+
+  Output contract:
+  Return exactly one final prompt line suitable for an image model.

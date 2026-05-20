@@ -41,3 +41,14 @@ agents:
       - logo
       - branding
       - prompt
+
+  - id: 82f9282f-55c6-4bdf-85e9-8c402eac75fd
+    name: Scenta Perfume Label
+    description: Generates one final plain-text prompt that can be pasted into another AI image model.
+    version: 1.0.0
+    author: OpenAgent
+    file: scenta-perfume-label.yaml
+    tags:
+      - perfume
+      - label
+      - prompt

@@ -1,32 +1,121 @@
-id: logo-prompt-generator
-name: Logo Prompt Generator
-description: Generate a high-quality logo design prompt from brand details
-version: 1.0.0
+id: logo-prompt-generator-v2
+name: Professional Logo Prompt Generator
+description: Generates a premium, production-ready AI logo prompt optimized for modern image models and vector-style branding.
+version: 2.0.0
 author: OpenAgent
 
+# ========== INPUTS ==========
 inputs:
   brand_name:
     type: text
     required: true
+    description: Name of the brand or company.
+
   brand_description:
     type: textarea
     required: false
+    description: What the brand does, target audience, personality, or industry.
 
+  logo_style:
+    type: select
+    required: false
+    default: modern minimalist
+    options:
+      - modern minimalist
+      - luxury
+      - futuristic
+      - tech
+      - streetwear
+      - premium
+      - elegant
+      - bold
+      - playful
+      - cyberpunk
+      - japanese
+      - vintage
+    description: Overall visual direction for the logo.
+
+  color_palette:
+    type: text
+    required: false
+    default: black and white
+    description: Preferred color palette or brand colors.
+
+  icon_preference:
+    type: text
+    required: false
+    description: Optional icon, symbol, or visual element to include.
+
+  typography_style:
+    type: select
+    required: false
+    default: clean sans-serif
+    options:
+      - clean sans-serif
+      - geometric
+      - luxury serif
+      - futuristic
+      - handwritten
+      - bold condensed
+      - minimalist
+    description: Typography direction.
+
+  background_style:
+    type: select
+    required: false
+    default: transparent
+    options:
+      - transparent
+      - white
+      - black
+      - dark gradient
+    description: Background style for the generated logo.
+
+# ========== MODEL ==========
 model:
   provider: openrouter
-  model: openai/gpt-4
+  model: openai/gpt-4.1
 
+# ========== OUTPUT ==========
 output:
-  type: markdown
+  type: plain_text
 
+# ========== PROMPT ==========
 prompt: |
-  Generate one polished, production-ready logo design prompt for an image model.
+  You are a world-class branding and logo prompt engineer.
 
-  Brand name: {{brand_name}}
-  Brand description (optional): {{brand_description}}
+  Your task is to generate ONE highly detailed, production-quality AI image prompt for a professional logo design.
 
-  Requirements:
-  - Return only the final logo prompt text.
-  - Keep it concise and specific.
-  - Include style, color direction, typography direction, composition, and background constraints.
-  - Make it suitable for clean vector-style logo generation.
+  # BRAND INFORMATION
+  Brand Name: {{brand_name}}
+  Brand Description: {{brand_description}}
+
+  # DESIGN SETTINGS
+  Logo Style: {{logo_style}}
+  Color Palette: {{color_palette}}
+  Icon Preference: {{icon_preference}}
+  Typography Style: {{typography_style}}
+  Background Style: {{background_style}}
+
+  # REQUIREMENTS
+  - Return ONLY the final image-generation prompt.
+  - Do not explain anything.
+  - Make the prompt optimized for modern AI image models.
+  - Focus on clean vector-style logo aesthetics.
+  - Include:
+    - logo style
+    - composition
+    - typography direction
+    - icon/symbol details
+    - color direction
+    - lighting/shadow constraints
+    - background constraints
+    - branding feel
+  - Keep the logo minimal, scalable, and professional.
+  - Avoid mockups, paper textures, 3D renders, watermarks, and unnecessary objects.
+  - Prefer centered composition.
+  - Mention:
+    "vector logo", "minimal", "high contrast", "clean lines", "brand identity", and "transparent background" when appropriate.
+  - Ensure the output works well for image models like Flux, DALL·E, Midjourney, and SDXL.
+
+  Generate the final premium logo prompt now.
