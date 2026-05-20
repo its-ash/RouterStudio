@@ -1,4 +1,4 @@
-use crate::ui::{Colors, Typography, Spacing, card_frame, primary_button};
+use crate::ui::{Colors, Typography, Spacing, Typefaces, card_frame, app_button, ButtonVariant};
 use egui;
 use image::DynamicImage;
 use std::sync::Arc;
@@ -19,7 +19,7 @@ impl OutputRenderer {
                 card_frame(ui, |ui| {
                     ui.label(
                         egui::RichText::new(text)
-                            .size(Typography::LG)
+                            .font(Typefaces::body(Typography::LG))
                             .color(Colors::FOREGROUND)
                     );
                 });
@@ -37,25 +37,25 @@ impl OutputRenderer {
                         if paragraph.starts_with("# ") {
                             ui.label(
                                 egui::RichText::new(&paragraph[2..])
-                                    .size(Typography::XXXXL)
+                                    .font(Typefaces::display(Typography::XXXXL))
                                     .strong()
                             );
                         } else if paragraph.starts_with("## ") {
                             ui.label(
                                 egui::RichText::new(&paragraph[3..])
-                                    .size(Typography::XXXL)
+                                    .font(Typefaces::display(Typography::XXXL))
                                     .strong()
                             );
                         } else if paragraph.starts_with("### ") {
                             ui.label(
                                 egui::RichText::new(&paragraph[4..])
-                                    .size(Typography::XXL)
+                                    .font(Typefaces::section(Typography::XXL))
                                     .strong()
                             );
                         } else {
                             ui.label(
                                 egui::RichText::new(paragraph)
-                                    .size(Typography::LG)
+                                    .font(Typefaces::body(Typography::LG))
                             );
                         }
                         
@@ -90,7 +90,7 @@ impl OutputRenderer {
                 ui.add_space(Spacing::XS);
                 
                 // Download button
-                if primary_button(ui, "DOWNLOAD IMAGE").clicked() {
+                if app_button(ui, "DOWNLOAD IMAGE", ButtonVariant::Primary).clicked() {
                     let img_clone = Arc::clone(img);
                     std::thread::spawn(move || {
                         if let Some(path) = rfd::FileDialog::new()

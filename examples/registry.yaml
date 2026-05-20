@@ -52,3 +52,27 @@ agents:
       - perfume
       - label
       - prompt
+
+  - id: peptidegene-vial-image-clean
+    name: Peptide Gene Vial Image (Clean)
+    description: Generate a clean vial image for Peptide Gene with fixed brand constraints and a single vial name input.
+    version: 1.0.0
+    author: OpenAgent
+    file: peptidegene-vial-image-clean.yaml
+    tags:
+      - vial
+      - biotech
+      - image
+      - peptidegene
+
+  - id: peptidegene-vial-image-clinical
+    name: Peptide Gene Vial Image (Clinical)
+    description: Generate a clinical-style vial image for Peptide Gene with fixed brand constraints and a single vial name input.
+    version: 1.0.0
+    author: OpenAgent
+    file: peptidegene-vial-image-clinical.yaml
+    tags:
+      - vial
+      - biotech
+      - image
+      - peptidegene

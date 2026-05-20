@@ -3,7 +3,7 @@ use crate::openrouter::OpenRouterClient;
 use crate::render::{OutputRenderer, OutputType};
 use crate::settings::Settings;
 use crate::storage::Storage;
-use crate::ui::{InputRenderer, View, Colors, Typography, Spacing, horizontal_rule, primary_button, secondary_button, card_frame, inverted_card_frame};
+use crate::ui::{InputRenderer, View, Colors, Typography, Spacing, Typefaces, searchable_dropdown, horizontal_rule, app_button, ButtonVariant, card_frame, inverted_card_frame};
 use egui::Color32;
 use std::collections::HashMap;
 
@@ -70,7 +70,7 @@ impl OpenAgentApp {
         // App title - uppercase kinetic style
         ui.label(
             egui::RichText::new("OPENAGENT")
-                .size(Typography::XL)
+                .font(Typefaces::display(Typography::XL))
                 .strong()
                 .color(Colors::FOREGROUND)
         );
@@ -157,7 +157,7 @@ impl OpenAgentApp {
         // Section header - uppercase kinetic style
         ui.label(
             egui::RichText::new("INSTALLED AGENTS")
-                .size(Typography::XXXL)
+                    .font(Typefaces::display(Typography::XXXL))
                 .strong()
                 .color(Colors::FOREGROUND)
         );
@@ -188,7 +188,7 @@ impl OpenAgentApp {
                         ui.vertical(|ui| {
                             ui.label(
                                 egui::RichText::new(&agent.name)
-                                    .size(Typography::XL)
+                                    .font(Typefaces::section(Typography::XL))
                                     .strong()
                                     .color(Colors::FOREGROUND)
                             );
@@ -197,14 +197,14 @@ impl OpenAgentApp {
                                 ui.add_space(Spacing::XXXS);
                                 ui.label(
                                     egui::RichText::new(desc)
-                                        .size(Typography::BASE)
+                                        .font(Typefaces::body(Typography::BASE))
                                         .color(Colors::MUTED_FOREGROUND)
                                 );
                             }
                         });
                         
                         ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                            if secondary_button(ui, "SELECT").clicked() {
+                            if app_button(ui, "SELECT", ButtonVariant::Secondary).clicked() {
                                 self.selected_agent = Some(agent.clone());
                                 self.selected_model = Some(agent.model.model.clone());
                                 self.input_values.clear();
@@ -225,7 +225,7 @@ impl OpenAgentApp {
         
         ui.label(
             egui::RichText::new("COMMUNITY AGENTS")
-                .size(Typography::XXXL)
+                .font(Typefaces::display(Typography::XXXL))
                 .strong()
                 .color(Colors::FOREGROUND)
         );
@@ -277,13 +277,13 @@ impl OpenAgentApp {
                     ui.vertical(|ui| {
                         ui.label(
                             egui::RichText::new(&agent.name)
-                                .size(Typography::XL)
+                                .font(Typefaces::section(Typography::XL))
                                 .strong()
                         );
                         ui.add_space(Spacing::XXXS);
                         ui.label(
                             egui::RichText::new(agent.description.as_deref().unwrap_or(""))
-                                .size(Typography::BASE)
+                                .font(Typefaces::body(Typography::BASE))
                                 .color(Colors::MUTED_FOREGROUND)
                         );
                     });
@@ -294,10 +294,10 @@ impl OpenAgentApp {
                         if is_installed {
                             ui.label(
                                 egui::RichText::new("INSTALLED")
-                                    .size(Typography::SM)
+                                    .font(Typefaces::meta(Typography::SM))
                                     .strong()
                             );
-                        } else if primary_button(ui, "INSTALL").clicked() {
+                        } else if app_button(ui, "INSTALL", ButtonVariant::Primary).clicked() {
                             agent_to_install = Some(agent.clone());
                         }
                     });
@@ -317,7 +317,7 @@ impl OpenAgentApp {
         
         ui.label(
             egui::RichText::new("SETTINGS")
-                .size(Typography::XXXL)
+                .font(Typefaces::display(Typography::XXXL))
                 .strong()
         );
         
@@ -328,7 +328,7 @@ impl OpenAgentApp {
         // API Key section
         ui.label(
             egui::RichText::new("OPENROUTER API KEY")
-                .size(Typography::BASE)
+                .font(Typefaces::meta(Typography::BASE))
                 .strong()
         );
         ui.add_space(Spacing::XXS);
@@ -348,7 +348,7 @@ impl OpenAgentApp {
         // Registry URL section
         ui.label(
             egui::RichText::new("GITHUB REGISTRY URL")
-                .size(Typography::BASE)
+                .font(Typefaces::meta(Typography::BASE))
                 .strong()
         );
         ui.add_space(Spacing::XXS);
@@ -369,13 +369,13 @@ impl OpenAgentApp {
 
         // Actions
         ui.horizontal(|ui| {
-            if primary_button(ui, "SAVE SETTINGS").clicked() {
+            if app_button(ui, "SAVE SETTINGS", ButtonVariant::Primary).clicked() {
                 self.settings.save(&self.storage);
             }
             
             ui.add_space(Spacing::BASE);
             
-            if secondary_button(ui, "CLEAR CACHE").clicked() {
+            if app_button(ui, "CLEAR CACHE", ButtonVariant::Secondary).clicked() {
                 self.storage.clear_cache();
             }
         });
@@ -386,12 +386,12 @@ impl OpenAgentApp {
         
         ui.label(
             egui::RichText::new("CREATE")
-                .size(Typography::XXXXXL)
+                .font(Typefaces::display(Typography::XXXXXL))
                 .strong()
         );
         ui.label(
             egui::RichText::new("CUSTOM AGENT")
-                .size(Typography::XXXXXL)
+                .font(Typefaces::display(Typography::XXXXXL))
                 .strong()
         );
         
@@ -403,13 +403,13 @@ impl OpenAgentApp {
         inverted_card_frame(ui, |ui| {
             ui.label(
                 egui::RichText::new("COMING SOON")
-                    .size(Typography::XXXL)
+                    .font(Typefaces::display(Typography::XXXL))
                     .strong()
             );
             ui.add_space(Spacing::XXS);
             ui.label(
                 egui::RichText::new("Agent creation interface in development.")
-                    .size(Typography::LG)
+                    .font(Typefaces::body(Typography::LG))
             );
         });
     }
@@ -420,7 +420,7 @@ impl OpenAgentApp {
             ui.add(
                 egui::Button::new(
                     egui::RichText::new("< BACK")
-                        .size(Typography::SM)
+                        .font(Typefaces::meta(Typography::SM))
                         .color(Colors::FOREGROUND)
                 )
                 .fill(Colors::BACKGROUND)
@@ -444,14 +444,14 @@ impl OpenAgentApp {
             // Agent name - uppercase kinetic style
             ui.label(
                 egui::RichText::new(agent.name.to_uppercase())
-                    .size(Typography::XXXXL)
+                    .font(Typefaces::display(Typography::XXXXL))
                     .strong()
             );
             
             if let Some(desc) = &agent.description {
                 ui.label(
                     egui::RichText::new(desc)
-                        .size(Typography::SM)
+                        .font(Typefaces::body(Typography::SM))
                         .color(Colors::MUTED_FOREGROUND)
                 );
             }
@@ -461,7 +461,7 @@ impl OpenAgentApp {
             if agent.output.output_type != "image" {
                 ui.label(
                     egui::RichText::new("MODEL")
-                        .size(Typography::SM)
+                        .font(Typefaces::meta(Typography::SM))
                         .strong()
                 );
 
@@ -473,14 +473,13 @@ impl OpenAgentApp {
                     model_options.insert(0, selected_model.clone());
                 }
 
-                egui::ComboBox::from_id_salt("run_model_select")
-                    .selected_text(selected_model.as_str())
-                    .width(ui.available_width())
-                    .show_ui(ui, |ui| {
-                        for model in model_options {
-                            ui.selectable_value(selected_model, model.clone(), model);
-                        }
-                    });
+                searchable_dropdown(
+                    ui,
+                    "run_model_select",
+                    selected_model,
+                    &model_options,
+                    &mut self.search_queries,
+                );
 
                 ui.add_space(Spacing::XXS);
             }
@@ -489,7 +488,7 @@ impl OpenAgentApp {
             // Input form
             ui.label(
                 egui::RichText::new("CONFIGURE")
-                    .size(Typography::LG)
+                    .font(Typefaces::section(Typography::LG))
                     .strong()
             );
             
@@ -497,7 +496,7 @@ impl OpenAgentApp {
 
             ui.add_space(Spacing::XXS);
             
-            if primary_button(ui, "> EXECUTE AGENT").clicked() {
+            if app_button(ui, "> EXECUTE AGENT", ButtonVariant::Primary).clicked() {
                 // Validate required fields
                 let mut missing_fields = Vec::new();
                 for (name, input) in &agent.inputs {
@@ -527,7 +526,7 @@ impl OpenAgentApp {
             if let Some(output) = &self.output {
                 ui.label(
                     egui::RichText::new("OUTPUT")
-                        .size(Typography::XL)
+                        .font(Typefaces::section(Typography::XL))
                         .strong()
                 );
                 ui.add_space(Spacing::XXXS);
@@ -541,13 +540,13 @@ impl OpenAgentApp {
                 inverted_card_frame(ui, |ui| {
                     ui.label(
                         egui::RichText::new("ERROR")
-                            .size(Typography::BASE)
+                            .font(Typefaces::meta(Typography::BASE))
                             .strong()
                     );
                     ui.add_space(Spacing::XXXS);
                     ui.label(
                         egui::RichText::new(error)
-                            .size(Typography::SM)
+                            .font(Typefaces::body(Typography::SM))
                     );
                 });
             }
@@ -555,7 +554,7 @@ impl OpenAgentApp {
             ui.centered_and_justified(|ui| {
                 ui.label(
                     egui::RichText::new("SELECT AN AGENT")
-                        .size(Typography::XXL)
+                        .font(Typefaces::display(Typography::XXL))
                         .color(Colors::MUTED_FOREGROUND)
                 );
             });
@@ -572,13 +571,13 @@ impl OpenAgentApp {
                     if self.is_loading {
                         ui.label(
                             egui::RichText::new("● PROCESSING...")
-                                .size(Typography::SM)
+                                .font(Typefaces::meta(Typography::SM))
                                 .color(Colors::ACCENT)
                         );
                     } else {
                         ui.label(
                             egui::RichText::new("● READY")
-                                .size(Typography::SM)
+                                .font(Typefaces::meta(Typography::SM))
                                 .color(Colors::SUCCESS)
                         );
                     }

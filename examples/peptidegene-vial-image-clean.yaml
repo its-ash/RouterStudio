@@ -1,0 +1,42 @@
+id: peptidegene-vial-image-clean
+name: Peptide Gene Vial Image (Clean)
+description: Generate a clean vial image for Peptide Gene with fixed brand constraints and a single vial name input.
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  vial_name:
+    type: text
+    required: true
+    description: Name to print as the vial product name.
+  logo_file:
+    type: file
+    required: true
+    description: Upload the logo file to apply on the vial label.
+
+model:
+  provider: openrouter
+  model: pollinations
+
+output:
+  type: image
+
+prompt: |
+  Create a clean, premium biotech vial product image.
+
+  Fixed brand constraints:
+  - Brand Name: Peptide Gene
+  - Website: peptidegene.com
+  - Fixed Text: For research use only
+  - Logo: use the uploaded file {{logo_file}} prominently on the vial label
+
+  Variable field:
+  - Vial Name: {{vial_name}}
+
+  Art direction:
+  - White and silver scientific aesthetic
+  - Crisp studio lighting
+  - Sharp typography
+  - Front-facing vial, centered composition
+  - High legibility label layout
+  - Realistic but clean and minimal product shot

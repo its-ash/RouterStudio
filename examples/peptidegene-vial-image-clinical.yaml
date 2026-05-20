@@ -1,0 +1,40 @@
+id: peptidegene-vial-image-clinical
+name: Peptide Gene Vial Image (Clinical)
+description: Generate a clinical-style vial image for Peptide Gene with fixed brand constraints and a single vial name input.
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  vial_name:
+    type: text
+    required: true
+    description: Name to print as the vial product name.
+  logo_file:
+    type: file
+    required: true
+    description: Upload the logo file to apply on the vial label.
+
+model:
+  provider: openrouter
+  model: pollinations
+
+output:
+  type: image
+
+prompt: |
+  Generate a high-end clinical biotech vial image with a sterile lab aesthetic.
+
+  Fixed brand constraints:
+  - Brand Name: Peptide Gene
+  - Website: peptidegene.com
+  - Fixed Text: For research use only
+  - Logo: use the uploaded file {{logo_file}} on the label, clear and proportionate
+
+  Variable field:
+  - Vial Name: {{vial_name}}
+
+  Composition and style:
+  - Single vial hero shot, centered
+  - Cool neutral tones, subtle reflections, clean white background
+  - Label hierarchy: Peptide Gene at top, {{vial_name}} as product name, peptidegene.com at bottom, For research use only as compliance line
+  - Ultra sharp focus, commercial product photography quality

@@ -31,6 +31,7 @@ pub enum AgentInputType {
     Select,
     Number,
     Boolean,
+    File,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
