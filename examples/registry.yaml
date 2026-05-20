@@ -1,0 +1,32 @@
+version: 1
+
+agents:
+  - id: image-generator
+    name: Image Generator
+    description: Generate AI images using Pollinations
+    version: 1.0.0
+    author: OpenAgent
+    file: agents/image-generator.yaml
+    tags:
+      - image
+      - art
+  
+  - id: text-assistant
+    name: Text Assistant
+    description: General purpose AI assistant
+    version: 1.0.0
+    author: OpenAgent
+    file: agents/text-assistant.yaml
+    tags:
+      - text
+      - chat
+  
+  - id: code-generator
+    name: Code Generator
+    description: Generate code in multiple languages
+    version: 1.0.0
+    author: OpenAgent
+    file: agents/code-generator.yaml
+    tags:
+      - code
+      - development

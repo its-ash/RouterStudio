@@ -1,0 +1,20 @@
+id: text-assistant
+name: Text Assistant
+description: General purpose AI text assistant
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  question:
+    type: textarea
+    required: true
+
+model:
+  provider: openrouter
+  model: openai/gpt-4
+
+output:
+  type: markdown
+
+prompt: |
+  {{question}}

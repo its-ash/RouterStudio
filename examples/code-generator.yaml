@@ -1,0 +1,33 @@
+id: code-generator
+name: Code Generator
+description: Generate code snippets in any language
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  language:
+    type: select
+    options:
+      - Rust
+      - Python
+      - JavaScript
+      - Go
+    default: Rust
+  
+  task:
+    type: textarea
+    required: true
+
+model:
+  provider: openrouter
+  model: anthropic/claude-3.5-sonnet
+
+output:
+  type: markdown
+
+prompt: |
+  Generate {{language}} code for the following task:
+  
+  {{task}}
+  
+  Provide clean, well-commented code with explanations.

@@ -1,0 +1,28 @@
+id: image-generator
+name: Image Generator
+description: Generate AI images using Pollinations
+version: 1.0.0
+author: OpenAgent
+
+inputs:
+  prompt:
+    type: textarea
+    required: true
+  style:
+    type: select
+    options:
+      - anime
+      - realistic
+      - abstract
+      - cyberpunk
+    default: realistic
+
+model:
+  provider: openrouter
+  model: pollinations
+
+output:
+  type: image
+
+prompt: |
+  {{style}} style image: {{prompt}}
